@@ -5,6 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Entry } from '../shared/entry.model';
 import { EntryService } from '../shared/entry.service';
 
+import { Category } from '../../categories/shared/category.model'         
+import { CategoryService } from '../../categories/shared/category.service'
+
 import { switchMap } from 'rxjs/operators';
 
 import toastr from 'toastr';
@@ -21,9 +24,11 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   pageTitle: string;
   serverErrorMessages: string[] = null;
   submittingForm: boolean = false;
+  categories: Array<Category>
 
   entry: Entry = new Entry();
 
+  // Configurações dos componentes
   imaskConfig = {
     mask: Number,
     scale: 2,
@@ -37,7 +42,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     firstDayOfWeek: 0,
     dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
     dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-    dayNamesMin: ['Do', 'Sg', 'Te', 'Qa', 'Qi', 'Sx', 'Sa'],
+    dayNamesMin: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
     monthNames: [ 
       'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
       'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
@@ -54,13 +59,15 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     private entryService : EntryService,
     private rout: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private categorySerevice: CategoryService
   ) { };
 
   ngOnInit() {
     this.setCurrentAction();
     this.buildEntryForm();
     this.loadEntry();
+    this.loadCategories();
   }
 
   ngAfterContentChecked() {    
@@ -74,6 +81,17 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     } else {
       this.updateEntry();
     }
+  }
+
+  get typeOptions(): Array<any> {
+    return Object.entries(Entry.types).map (
+      ([value, text]) => {
+        return {
+          text: text,
+          value: value
+        };
+      }
+    ); 
   }
 
   // Private Methodes
@@ -90,10 +108,10 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
       id: [null],
       name: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(255)]],
       description: [null, [Validators.maxLength(255)]],
-      type: [null, [Validators.required]],
+      type: ['expense', [Validators.required]],
       amount: [null, [Validators.required]],
       date: [null, [Validators.required]],
-      paid: [null, [Validators.required]],
+      paid: [true, [Validators.required]],
       categoryId: [null, [Validators.required]]
     });
   }
@@ -112,6 +130,13 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
       );
     }
   }
+
+  private loadCategories() {
+    this.categorySerevice.getAll().subscribe(
+      categories => this.categories = categories
+    );
+  }
+
 
   private setPageTitle() {
     if (this.currentAction == 'new') {
@@ -142,7 +167,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
 
   private actionsForSuccess(entry: Entry) {
     toastr.success('Solicitação processada com sucesso')
-    this.router.navigateByUrl('entry', {skipLocationChange: true}).then(
+    this.router.navigateByUrl('entries', {skipLocationChange: true}).then(
       () => this.router.navigate(['entries', entry.id.toString(), 'edit'])      
     )    
     this.submittingForm = false;

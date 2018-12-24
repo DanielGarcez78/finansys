@@ -1,7 +1,7 @@
 <nav class="mb-5">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
-    <li class="breadcrumb-item"><a routerLink="/catehories">Lançamentos</a></li>
+    <li class="breadcrumb-item"><a routerLink="/entries">Lançamentos</a></li>
     <li class="breadcrumb-item active"><span>{{pageTitle}}</span></li>
   </ol>
 </nav>
@@ -32,8 +32,7 @@
         <div class="form-group col-md-2">
           <label for="type">Tipo</label>
           <select class="form-control" id="type" formControlName="type">
-            <option value="expense">Despesa</option>
-            <option value="revenue">Receita</option>
+            <option *ngFor="let option of typeOptions" [value]="option.value">{{option.text}}</option>            
           </select>
           <div class="text-danger" *ngIf="entryForm.get('type').touched && entryForm.get('type').invalid">
             <div *ngIf="entryForm.get('name').errors.required">dado obrigatório</div>
@@ -98,8 +97,7 @@
         <div class="form-group col-md-3">
           <label for="categoryId">Categoria</label>
           <select class="form-control" id="categoryId" formControlName="categoryId">
-            <option value="1">Categoria 1</option>
-            <option value="2">Categoria 2</option>
+            <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>            
           </select>
           <div class="text-danger" *ngIf="entryForm.get('categoryId').touched && entryForm.get('categoryId').invalid">
             <div *ngIf="entryForm.get('categoryId').errors.required">dado obrigatório</div>
