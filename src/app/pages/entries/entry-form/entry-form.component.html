@@ -26,8 +26,21 @@
       Informações sobre o lançamento
     </div>
     <div class="card-body">
+
       <div class="form-row">
-        <div class="form-group col-md-4">
+        <!-- TYPE -->
+        <div class="form-group col-md-2">
+          <label for="type">Tipo</label>
+          <select class="form-control" id="type" formControlName="type">
+            <option value="expense">Despesa</option>
+            <option value="revenue">Receita</option>
+          </select>
+          <div class="text-danger" *ngIf="entryForm.get('type').touched && entryForm.get('type').invalid">
+            <div *ngIf="entryForm.get('name').errors.required">dado obrigatório</div>
+          </div>            
+        </div>        
+        <!-- NAME -->
+        <div class="form-group col-md-5">
             <label for="name">Lançamento</label>
             <input type="text" class="form-control" id="name" formControlName="name"/>
             <div class="text-danger" *ngIf="entryForm.get('name').touched && entryForm.get('name').invalid">
@@ -36,13 +49,70 @@
               <div *ngIf="entryForm.get('name').errors.maxlength">dado não pode ter mais que 255 caracteres</div>
             </div>            
         </div>
+        <!-- AMOUNT -->
+        <div class="form-group col-md-3">
+            <label for="amount">Valor</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">R$</div>
+              </div>
+              <input type="text" class="form-control text-right" id="amount" formControlName="amount" [imask]="imaskConfig"/>
+            </div>            
+            <div class="text-danger" *ngIf="entryForm.get('amount').touched && entryForm.get('amount').invalid">
+              <div *ngIf="entryForm.get('amount').errors.required">dado obrigatório</div>
+            </div>            
+        </div>
+        <!-- DATE -->
+        <div class="form-group col-md-2">
+            <label for="date">Data</label>
+            <p-calendar
+              id="date"
+              formControlName="date"
+              inputStyleClass="form-control"
+              dataType="string"
+              dateFormat="dd/mm/yy"
+              [locale]="ptBR"
+              [showButtonBar]="true">            
+            </p-calendar>
+            <div class="text-danger" *ngIf="entryForm.get('date').touched && entryForm.get('date').invalid">
+              <div *ngIf="entryForm.get('date').errors.required">dado obrigatório</div>
+            </div>            
+        </div>
+      </div>
 
-        <div class="form-group col-md-8">
+      <div class="form-row">
+
+        <!-- PAID -->
+        <div class="form-group col-md-2">
+            <label for="paid">Pago</label>
+            <div class="btn-group">
+              <label (click)="entryForm.get('paid').setValue(true)" [class.active]="entryForm.get('paid').value==true" class="btn btn-outline-info">Pago</label>
+              <label (click)="entryForm.get('paid').setValue(false)" [class.active]="entryForm.get('paid').value==false" class="btn btn-outline-info">Pendente</label>
+            </div>
+            <div class="text-danger" *ngIf="entryForm.get('paid').touched && entryForm.get('paid').invalid">
+              <div *ngIf="entryForm.get('paid').errors.required">dado obrigatório</div>
+            </div>            
+        </div>
+
+        <!-- CATEGORY -->
+        <div class="form-group col-md-3">
+          <label for="categoryId">Categoria</label>
+          <select class="form-control" id="categoryId" formControlName="categoryId">
+            <option value="1">Categoria 1</option>
+            <option value="2">Categoria 2</option>
+          </select>
+          <div class="text-danger" *ngIf="entryForm.get('categoryId').touched && entryForm.get('categoryId').invalid">
+            <div *ngIf="entryForm.get('categoryId').errors.required">dado obrigatório</div>
+          </div>            
+        </div> 
+
+        <!-- DESCRIPTION -->
+        <div class="form-group col-md-7">
             <label for="description">Descrição</label>
             <input type="text" class="form-control" id="description" formControlName="description"/>
         </div>
-
       </div>
+
     </div>
   </div>
 
