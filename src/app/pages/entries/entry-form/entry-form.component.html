@@ -35,7 +35,7 @@
             <option *ngFor="let option of typeOptions" [value]="option.value">{{option.text}}</option>            
           </select>
           <div class="text-danger" *ngIf="entryForm.get('type').touched && entryForm.get('type').invalid">
-            <div *ngIf="entryForm.get('name').errors.required">dado obrigatório</div>
+            <div *ngIf="entryForm.get('type').errors.required">dado obrigatório</div>
           </div>            
         </div>        
         <!-- NAME -->
