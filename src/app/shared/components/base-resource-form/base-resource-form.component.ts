@@ -129,8 +129,4 @@ export abstract class BaseRerouceFormComponent<T extends BaseResourceModel> impl
       this.serverErrorMessages = ["Falha na comunicação com o servidor. Por favor tente mais tarde."]
     }
   }
-
-
-
-
 }
