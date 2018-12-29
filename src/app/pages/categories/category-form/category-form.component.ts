@@ -28,7 +28,7 @@ export class CategoryFormComponent extends BaseRerouceFormComponent<Category> {
     });
   }
 
-  protected creattionPageTitle(): string {
+  protected creationPageTitle(): string {
     return 'Cadastro de Nova Categoria';
   }
 
