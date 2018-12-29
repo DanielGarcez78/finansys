@@ -11,26 +11,23 @@
     <div class="card-body">
 
       <div class="form-row">
+        
         <!-- TYPE -->
         <div class="form-group col-md-2">
           <label for="type">Tipo</label>
           <select class="form-control" id="type" formControlName="type">
             <option *ngFor="let option of typeOptions" [value]="option.value">{{option.text}}</option>            
           </select>
-          <div class="text-danger" *ngIf="resourceForm.get('type').touched && resourceForm.get('type').invalid">
-            <div *ngIf="resourceForm.get('type').errors.required">dado obrigatório</div>
-          </div>            
-        </div>        
+          <app-form-field-error [form-control]="resourceForm.get('type')"></app-form-field-error>
+        </div>
+
         <!-- NAME -->
         <div class="form-group col-md-5">
             <label for="name">Lançamento</label>
             <input type="text" class="form-control" id="name" formControlName="name"/>
-            <div class="text-danger" *ngIf="resourceForm.get('name').touched && resourceForm.get('name').invalid">
-              <div *ngIf="resourceForm.get('name').errors.required">dado obrigatório</div>
-              <div *ngIf="resourceForm.get('name').errors.minlength">dado não pode ter menos de 2 caracteres</div>
-              <div *ngIf="resourceForm.get('name').errors.maxlength">dado não pode ter mais que 255 caracteres</div>
-            </div>            
+            <app-form-field-error [form-control]="resourceForm.get('name')"></app-form-field-error>
         </div>
+
         <!-- AMOUNT -->
         <div class="form-group col-md-3">
             <label for="amount">Valor</label>
@@ -40,9 +37,7 @@
               </div>
               <input type="text" class="form-control text-right" id="amount" formControlName="amount" [imask]="imaskConfig"/>
             </div>            
-            <div class="text-danger" *ngIf="resourceForm.get('amount').touched && resourceForm.get('amount').invalid">
-              <div *ngIf="resourceForm.get('amount').errors.required">dado obrigatório</div>
-            </div>            
+            <app-form-field-error [form-control]="resourceForm.get('amount')"></app-form-field-error>
         </div>
         <!-- DATE -->
         <div class="form-group col-md-2">
@@ -56,10 +51,9 @@
               [locale]="ptBR"
               [showButtonBar]="true">            
             </p-calendar>
-            <div class="text-danger" *ngIf="resourceForm.get('date').touched && resourceForm.get('date').invalid">
-              <div *ngIf="resourceForm.get('date').errors.required">dado obrigatório</div>
-            </div>            
+            <app-form-field-error [form-control]="resourceForm.get('date')"></app-form-field-error>
         </div>
+
       </div>
 
       <div class="form-row">
@@ -71,9 +65,7 @@
               <label (click)="resourceForm.get('paid').setValue(true)" [class.active]="resourceForm.get('paid').value==true" class="btn btn-outline-info">Pago</label>
               <label (click)="resourceForm.get('paid').setValue(false)" [class.active]="resourceForm.get('paid').value==false" class="btn btn-outline-info">Pendente</label>
             </div>
-            <div class="text-danger" *ngIf="resourceForm.get('paid').touched && resourceForm.get('paid').invalid">
-              <div *ngIf="resourceForm.get('paid').errors.required">dado obrigatório</div>
-            </div>            
+            <app-form-field-error [form-control]="resourceForm.get('paid')"></app-form-field-error>
         </div>
 
         <!-- CATEGORY -->
@@ -82,9 +74,7 @@
           <select class="form-control" id="categoryId" formControlName="categoryId">
             <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>            
           </select>
-          <div class="text-danger" *ngIf="resourceForm.get('categoryId').touched && resourceForm.get('categoryId').invalid">
-            <div *ngIf="resourceForm.get('categoryId').errors.required">dado obrigatório</div>
-          </div>            
+          <app-form-field-error [form-control]="resourceForm.get('categoryId')"></app-form-field-error>    
         </div> 
 
         <!-- DESCRIPTION -->
@@ -92,6 +82,7 @@
             <label for="description">Descrição</label>
             <input type="text" class="form-control" id="description" formControlName="description"/>
         </div>
+
       </div>
 
     </div>
